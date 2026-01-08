@@ -1,6 +1,6 @@
 # Google Travel에서 호텔 스クレイピング하기
 
-[![Promo](https://github.com/luminati-io/LinkedIn-Scraper/raw/main/Proxies%20and%20scrapers%20GitHub%20bonus%20banner.png)](https://brightdata.co.kr/) 
+[![Promo](https://github.com/bright-kr/LinkedIn-Scraper/raw/main/Proxies%20and%20scrapers%20GitHub%20bonus%20banner.png)](https://brightdata.co.kr/) 
 
 이 가이드는 Selenium 방식 또는 Bright Data의 API를 사용하여 Google Travel에서 호텔 목록, 가격 및 편의시설을 수집하는 방법을 설명합니다.
 
