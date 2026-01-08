@@ -1,8 +1,8 @@
-# Scraping Hotels from Google Travel
+# Google Travel에서 호텔 스クレイピング하기
 
-[![Promo](https://github.com/luminati-io/LinkedIn-Scraper/raw/main/Proxies%20and%20scrapers%20GitHub%20bonus%20banner.png)](https://brightdata.com/) 
+[![Promo](https://github.com/luminati-io/LinkedIn-Scraper/raw/main/Proxies%20and%20scrapers%20GitHub%20bonus%20banner.png)](https://brightdata.co.kr/) 
 
-This guide explains how to gather hotel listings, prices, and amenities from Google Travel using either Selenium methods or Bright Data’s APIs.
+이 가이드는 Selenium 방식 또는 Bright Data의 API를 사용하여 Google Travel에서 호텔 목록, 가격 및 편의시설을 수집하는 방법을 설명합니다.
 
 - [Prerequisites](#prerequisites)
 - [What To Extract From Google Travel](#what-to-extract-from-google-travel)
@@ -14,23 +14,23 @@ This guide explains how to gather hotel listings, prices, and amenities from Goo
 
 ## Prerequisites
 
-To scrape travel data, you’re going to need Python and either Selenium, Requests, or AIOHTTP modules. With Selenium, you’ll scrape hotel information straight from Google Travel. With Requests and AIOHTTP, you’ll use Bright Data’s [Booking.com API](https://brightdata.com/products/web-scraper/booking).
+여행 데이터를 スクレイピング하려면 Python과 Selenium, Requests 또는 AIOHTTP 모듈 중 하나가 필요합니다. Selenium을 사용하면 Google Travel에서 호텔 정보를 직접 スクレイピング합니다. Requests와 AIOHTTP를 사용하면 Bright Data의 [Booking.com API](https://brightdata.co.kr/products/web-scraper/booking)를 사용하게 됩니다.
 
-If you’re using Selenium, make sure you have [webdriver](https://googlechromelabs.github.io/chrome-for-testing/) installed. If you’re unfamiliar with Selenium, take a look at [this guide](https://brightdata.com/blog/how-tos/using-selenium-for-web-scraping) to get acquainted quickly.
+Selenium을 사용하는 경우 [webdriver](https://googlechromelabs.github.io/chrome-for-testing/)가 설치되어 있는지 확인합니다. Selenium이 익숙하지 않다면, 빠르게 익히기 위해 [이 가이드](https://brightdata.co.kr/blog/how-tos/using-selenium-for-web-scraping)를 확인해 보시기 바랍니다.
 
-Install Selenium:
+Selenium 설치:
 
 ```
 pip install selenium
 ```
 
-Install Requests:
+Requests 설치:
 
 ```
 pip install requests
 ```
 
-Install AIOHTTP:
+AIOHTTP 설치:
 
 ```bash
 pip install aiohttp
@@ -38,33 +38,33 @@ pip install aiohttp
 
 ## What To Extract From Google Travel
 
-All of the hotel results come embedded in a custom `c-wiz` element from Google Travel.
+모든 호텔 결과는 Google Travel의 커스텀 `c-wiz` 요소에 포함되어 있습니다.
 
-![Inspect c-wiz Element](https://brightdata.com/wp-content/uploads/2025/01/image-32.png)
+![Inspect c-wiz Element](https://brightdata.co.kr/wp-content/uploads/2025/01/image-32.png)
 
-However, there are many `c-wiz` elements on the page. Each hotel card contains an `a` element directly descended from a `div` and this `c-wiz` element. We can write a CSS selector to find all `a` tags descended from these elements: `c-wiz > div > a`.
+하지만 페이지에는 많은 `c-wiz` 요소가 존재합니다. 각 호텔 카드에는 `div` 및 해당 `c-wiz` 요소에서 직접 하위로 내려오는 `a` 요소가 포함되어 있습니다. 이 요소들에서 하위에 있는 모든 `a` 태그를 찾기 위해 CSS selector를 작성할 수 있습니다: `c-wiz > div > a`.
 
-![Inspect a Element](https://brightdata.com/wp-content/uploads/2025/01/image-33.png)
+![Inspect a Element](https://brightdata.co.kr/wp-content/uploads/2025/01/image-33.png)
 
-The name of the listing comes embedded in an `h2`.
+리스팅의 이름은 `h2`에 포함되어 있습니다.
 
-![Inspect h2 Element](https://brightdata.com/wp-content/uploads/2025/01/image-34.png)
+![Inspect h2 Element](https://brightdata.co.kr/wp-content/uploads/2025/01/image-34.png)
 
-Our price comes embedded in a `span`.
+가격은 `span`에 포함되어 있습니다.
 
-![Inspect Price Element](https://brightdata.com/wp-content/uploads/2025/01/image-35.png)
+![Inspect Price Element](https://brightdata.co.kr/wp-content/uploads/2025/01/image-35.png)
 
-Our amenities are embedded in `li` (list) elements.
+편의시설은 `li`(리스트) 요소에 포함되어 있습니다.
 
-![Inspect Amenities](https://brightdata.com/wp-content/uploads/2025/01/image-36.png)
+![Inspect Amenities](https://brightdata.co.kr/wp-content/uploads/2025/01/image-36.png)
 
-After finding a hotel card, we can extract all of the aforementioned data from it.
+호텔 카드를 찾은 후에는, 위에서 언급한 모든 데이터를 해당 카드에서 추출할 수 있습니다.
 
 ## Extracting The Data With Selenium
 
-Extracting this data with Selenium is relatively straightforward once you know what to look for. However, Google Travel loads the results dynamically, which makes it a delicate process held together by preconfigured waits, mouse clicks, and custom windows.
+Selenium으로 이 데이터를 추출하는 작업은 무엇을 찾아야 하는지 알고 나면 비교적 간단합니다. 하지만 Google Travel은 결과를 동적으로 로드하므로, 사전 구성된 대기(wait), 마우스 클릭, 커스텀 창에 의해 겨우 유지되는 섬세한 프로세스가 됩니다.
 
-Here is the full Python script:
+아래는 전체 Python 스크립트입니다:
 
 ```python
 from selenium import webdriver
@@ -146,37 +146,37 @@ if __name__ == "__main__":
     scrape_hotels("miami", pages=PAGES)
 ```
 
-Let's review what the script does step by step:
+스크립트가 수행하는 작업을 단계별로 살펴보겠습니다:
 
-1. First, we create an instance of `ChromeOptions`. We use this to add our `--headless` and `--window-size=1920,1080` arguments.
+1. 먼저 `ChromeOptions`의 인스턴스를 생성합니다. 이를 사용하여 `--headless` 및 `--window-size=1920,1080` 인자를 추가합니다.
 
 > **Note**\
-> Without the custom window size, the results would not load properly, and we would end up scraping the same results over and over again.
+> 커스텀 window size가 없으면 결과가 제대로 로드되지 않으며, 동일한 결과를 반복해서 スクレイピング하게 됩니다.
 
-2. When we launch the browser, we use the keyword argument, `options=OPTIONS`. This launches Chrome with our custom options.
+2. 브라우저를 실행할 때 키워드 인자 `options=OPTIONS`를 사용합니다. 이를 통해 커스텀 옵션이 적용된 Chrome이 실행됩니다.
 
-3. `ActionChains(driver)` gives us an `ActionChains` instance. We use this later in our script to move the cursor to the `Next` button and then click on it.
+3. `ActionChains(driver)`는 `ActionChains` 인스턴스를 제공합니다. 이는 이후 스크립트에서 커서를 `Next` 버튼으로 이동한 다음 클릭하는 데 사용합니다.
 
-4. We use a `while` loop to contain our runtime. Once the scrape has finished, we’ll exit this loop.
+4. 런타임을 포함하기 위해 `while` 루프를 사용합니다. スクレイピング이 완료되면 이 루프를 종료합니다.
 
-5. `hotel_links = driver.find_elements(By.CSS_SELECTOR, "c-wiz > div > a")` gives us all of the hotel links on the page. We find their parent elements using their xpath: `hotel_card = hotel_link.find_element(By.XPATH, "..")`.
+5. `hotel_links = driver.find_elements(By.CSS_SELECTOR, "c-wiz > div > a")`는 페이지의 모든 호텔 링크를 제공합니다. xpath를 사용해 부모 요소를 찾습니다: `hotel_card = hotel_link.find_element(By.XPATH, "..")`.
 
-6. We go through and extract all the individual bits of data we looked at earlier:
+6. 앞서 확인한 개별 데이터 조각을 모두 추출합니다:
     - url: `hotel_link.get_attribute("href")`
     - name: `hotel_card.find_element(By.CSS_SELECTOR, "h2").text`
-    - When looking for the price, there are sometimes additional elements in the card such as `DEAL` and `GREAT PRICE`. To ensure that we’re always getting the right price, we extract the `span` elements in an array. If the array contains these words, we take the second element (`price_holder[1].text`) instead of the first one (`price_holder[0].text`)
-    - We also use the `find_elements()` method when looking for the rating. If there is no rating present, we give it a default value of `n/a`.
-    - `hotel_card.find_elements(By.CSS_SELECTOR, "li")` yields our amenity holders. We extract each of them using their `text` attribute.
-7. We continue this loop until we’ve scraped all of our desired pages. Once we’ve got our data, we set `done` to `True` and exit the loop.
-8. We close the browser and use `json.dump()` to save all of our scraped data to a JSON file.
+    - 가격을 찾을 때 카드에 `DEAL`, `GREAT PRICE`와 같은 추가 요소가 포함되는 경우가 있습니다. 항상 올바른 가격을 가져오기 위해 `span` 요소를 배열로 추출합니다. 배열에 이러한 단어가 포함되면 첫 번째 요소(`price_holder[0].text`)가 아니라 두 번째 요소(`price_holder[1].text`)를 사용합니다.
+    - 평점을 찾을 때도 `find_elements()` 메서드를 사용합니다. 평점이 없으면 기본값으로 `n/a`를 부여합니다.
+    - `hotel_card.find_elements(By.CSS_SELECTOR, "li")`는 편의시설 요소들을 제공합니다. 각 요소의 `text` 속성을 사용해 추출합니다.
+7. 원하는 모든 페이지를 スクレイピング할 때까지 이 루프를 계속합니다. 데이터를 확보하면 `done`을 `True`로 설정하고 루프를 종료합니다.
+8. 브라우저를 닫고 `json.dump()`를 사용하여 スクレイピング한 모든 데이터를 JSON 파일로 저장합니다.
 
 ## Extracting the Data With Bright Data’s Travel API
 
-If you don't want to depend on a scraper or deal with selectors and locators, you can use our [travel data](https://brightdata.com/use-cases/travel) or extract hotel data using our [Booking.com API](https://brightdata.com/products/web-scraper/booking). Two methods to do it are the `requests` module and the AIOHTTP library.
+스크레이퍼에 의존하거나 selector 및 locator를 다루고 싶지 않다면, [travel data](https://brightdata.co.kr/use-cases/travel)를 사용하거나 [Booking.com API](https://brightdata.co.kr/products/web-scraper/booking)를 사용하여 호텔 데이터를 추출할 수 있습니다. 이를 수행하는 두 가지 방법은 `requests` 모듈과 AIOHTTP 라이브러리입니다.
 
 ### Requests
 
-The code below sets you up with the Booking.com API. Simply enter your API key, travel location, check-in date and check-out date. First, it makes a request to the API to generate the data. Then, it repeatedly checks on the data every 10 seconds until our report is ready. Once we’ve received our data, we save it in a JSON file.
+아래 코드는 Booking.com API를 사용할 수 있도록 설정합니다. API key, 여행 location, check-in 날짜 및 check-out 날짜를 입력하기만 하면 됩니다. 먼저 API에 요청을 보내 데이터를 생성합니다. 그런 다음 리포트가 준비될 때까지 10초마다 데이터를 반복적으로 확인합니다. 데이터를 수신하면 JSON 파일로 저장합니다.
 
 ```python
 import requests
@@ -264,12 +264,12 @@ if __name__ == "__main__":
     poll_and_retrieve_snapshot(API_KEY, snapshot_id)
 ```
 
-- `get_bookings()` takes your `API_KEY`, `LOCATION` and `DATES`. It then makes a request for the data and returns the `snapshot_id`.
-- The `snapshot_id` is required to retrieve the snapshot.
-- After the `snapshot_id` has been generated, `poll_and_retrieve_snapshot()` checks every 10 seconds to see if the data is ready.
-- Once the data is ready, we use `json.dump()` to save it to a JSON file.
+- `get_bookings()`는 `API_KEY`, `LOCATION`, `DATES`를 받습니다. 그런 다음 데이터 요청을 수행하고 `snapshot_id`를 반환합니다.
+- `snapshot_id`는 snapshot을 조회하는 데 필요합니다.
+- `snapshot_id`가 생성된 후, `poll_and_retrieve_snapshot()`는 데이터가 준비되었는지 10초마다 확인합니다.
+- 데이터가 준비되면 `json.dump()`를 사용해 JSON 파일로 저장합니다.
 
-When you run the code, you should see something similar to this in your terminal.
+코드를 실행하면 터미널에서 아래와 유사한 내용을 확인할 수 있습니다.
 
 ```
 Request successful. Response:
@@ -285,7 +285,7 @@ Snapshot is ready. Downloading...
 Snapshot saved to snapshot-data.json
 ```
 
-Then you’ll get a JSON file full of objects like this.
+그런 다음 아래와 같은 객체로 가득 찬 JSON 파일을 얻게 됩니다.
 
 ```json
 {
@@ -345,7 +345,7 @@ Then you’ll get a JSON file full of objects like this.
 
 ### AIOHTTP
 
-With the [AIOHTTP](https://brightdata.com/blog/web-data/speed-up-web-scraping) library, this process can become faster because we can trigger, poll, and download multiple datasets simultaneously. The code below builds on the concepts from the Requests example above, but instead uses `aiohttp.ClientSession()` to make multiple requests asynchronously.
+[AIOHTTP](https://brightdata.co.kr/blog/web-data/speed-up-web-scraping) 라이브러리를 사용하면 여러 データセット을 동시에 trigger, poll, download할 수 있으므로 이 프로세스가 더 빨라질 수 있습니다. 아래 코드는 위의 Requests 예제의 개념을 기반으로 하되, `aiohttp.ClientSession()`을 사용하여 여러 요청을 비동기적으로 수행합니다.
 
 ```python
 import aiohttp
@@ -438,11 +438,11 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-- Both `get_bookings()` and `poll_and_retrieve_snapshot()` now use the `aiohttp.ClientSession` object to create async requests to the server.
-- `process_location()` is used to process all data for a location.
-- `main()` allows us to call `process_location()` on all locations simultaneously.
+- 이제 `get_bookings()`와 `poll_and_retrieve_snapshot()` 모두 `aiohttp.ClientSession` 객체를 사용하여 서버에 대한 async 요청을 생성합니다.
+- `process_location()`은 특정 location에 대한 모든 데이터를 처리하는 데 사용합니다.
+- `main()`은 모든 location에 대해 `process_location()`을 동시에 호출할 수 있게 해줍니다.
 
-Here is the output:
+아래는 출력 예시입니다:
 
 ```
 Request successful for location: Miami. Response:
@@ -473,12 +473,12 @@ Snapshot saved to snapshot-key_west.json
 
 ## Bright Data’s Alternative Solutions
 
-Beyond the [Web Scraper APIs](https://brightdata.com/products/web-scraper), Bright Data provides ready-to-use datasets tailored to meet diverse needs. Among our most sought-after travel datasets are:
+[Web Scraper APIs](https://brightdata.co.kr/products/web-scraper) 외에도, Bright Data는 다양한 요구를 충족하도록 맞춤 설계된 즉시 사용 가능한 データセット을 제공합니다. 가장 수요가 높은 여행 データセット은 다음과 같습니다:
 
-- [Hotel Datasets](https://brightdata.com/products/datasets/travel/hotels)
-- [Expedia Datasets](https://brightdata.com/products/datasets/travel/expedia)
-- [Tourism Datasets](https://brightdata.com/products/datasets/tourism)
-- [Booking.com Datasets](https://brightdata.com/products/datasets/booking)
-- [TripAdvisor Datasets](https://brightdata.com/products/datasets/tripadvisor)
+- [Hotel Datasets](https://brightdata.co.kr/products/datasets/travel/hotels)
+- [Expedia Datasets](https://brightdata.co.kr/products/datasets/travel/expedia)
+- [Tourism Datasets](https://brightdata.co.kr/products/datasets/tourism)
+- [Booking.com Datasets](https://brightdata.co.kr/products/datasets/booking)
+- [TripAdvisor Datasets](https://brightdata.co.kr/products/datasets/tripadvisor)
 
-You can choose between fully managed or self-managed custom datasets, allowing you to extract data from any public website and customize it to your exact specifications.
+완전 관리형 또는 자체 관리형 커스텀 データセット 중에서 선택할 수 있으며, 이를 통해 어떤 공개 웹사이트에서든 데이터를 추출하고 정확한 사양에 맞게 커스터마이징할 수 있습니다.
